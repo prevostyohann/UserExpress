@@ -3,6 +3,7 @@ const loginView = require("../Views/loginView");
 const registerView = require('../Views/registerView');
 const adminView = require('../Views/adminView');
 const editUserView = require('../views/editUserView');
+const homeView = require('../Views/homeView');
 const db = require('../db/db');
 const bcrypt = require('bcrypt');
 
@@ -31,8 +32,9 @@ function traitLogin(req, res) {
             res.send('mauvais mot de passe');
         } else if (row && bcrypt.compareSync(password, row.password)) {
             console.log('connecté', username);
-            // Redirection vers la page des annonces après connexion réussie
-            res.redirect('/ads');
+            // Stocker les informations de l'utilisateur dans un cookie
+            res.cookie('user', JSON.stringify({ id: row.id, username: row.username, rights: row.rights }), { httpOnly: true });
+            res.redirect('/');
         } else {
             res.send('mauvais mot de passe');
         }
@@ -63,6 +65,10 @@ function traitRegister(req, res) {
     });
 }
 
+function showHome(req, res) {
+    res.send(homeView(req.user));
+}
+
 // Function to display the admin panel
 function showAdminPanel(req, res) {
     const query = `SELECT * FROM users`;
@@ -71,7 +77,7 @@ function showAdminPanel(req, res) {
             console.error('Error fetching users: ', err.message);
             res.send('Error loading admin panel');
         } else {
-            res.send(adminView(rows));
+            res.send(adminView(rows, req.user));
         }
     });
 }
@@ -118,4 +124,4 @@ function deleteUser(req, res) {
     });
 }
 
-module.exports = { getUser, showLogin, traitLogin, showRegister, traitRegister, showAdminPanel, showEditUser, updateUser, deleteUser };
+module.exports = { getUser, showLogin, traitLogin, showRegister, traitRegister, showAdminPanel, showEditUser, updateUser, deleteUser, showHome };

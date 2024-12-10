@@ -1,6 +1,10 @@
-module.exports = function (users) {
+const navView = require('./navView');
+
+module.exports = function (users, user) {
     return `
+        ${navView(user)}
         <h1>Admin Panel</h1>
+        <button onclick="window.location.href='/admin/pending-ads'">Approve Ads</button>
         <ul>
             ${users.map(user => `
                 <li>

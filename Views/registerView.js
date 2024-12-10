@@ -1,5 +1,8 @@
-function registerView() {
+const navView = require('./navView');
+
+function registerView(user) {
     return `
+     ${navView(user)}
         <html>
             <head>
                 <title>Register</title>
@@ -11,9 +14,8 @@ function registerView() {
                     <input type="username" id="username" name="username" placeholder="Username" required><br><br>
                     <label for="password">Mot de Passe:</label><br><br>
                     <input type="password" id="password" name="password" placeholder="Mot de Passe" required><br><br>
-                    <button type="submit">Register</button>
+                    <button type="submit">Send</button>
                 </form>
-                <a href="./login" id="login">Login</a>
             </body>
         </html>
     `;

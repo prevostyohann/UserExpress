@@ -1,6 +1,10 @@
 function authMiddleware(req, res, next) {
-    // Simuler un utilisateur connecté pour l'exemple
-    req.user = { id: 1, username: 'toto', rights: 'admin' }; // Remplacez ceci par votre logique d'authentification réelle
+    const userCookie = req.cookies.user;
+    if (userCookie) {
+        req.user = JSON.parse(userCookie); // Assurez-vous que les informations de l'utilisateur sont stockées dans un cookie
+    } else {
+        req.user = null;
+    }
     next();
 }
 

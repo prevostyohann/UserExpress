@@ -5,31 +5,43 @@ const createAdView = require('../Views/createAdView');
 const pendingAdsView = require('../Views/pendingAdsView');
 
 function showAds(req, res) {
-    const query = `SELECT * FROM ads WHERE isApproved = 1`;
+    const query = `
+        SELECT ads.*, users.username 
+        FROM ads 
+        JOIN users ON ads.userId = users.id 
+        WHERE ads.isApproved = 1
+    `;
     db.all(query, [], (err, rows) => {
         if (err) {
             console.error('Error fetching ads: ', err.message);
             res.send('Error loading ads');
         } else {
-            res.send(adsView(rows, req.user.id)); // Assurez-vous que req.user est défini
+            res.send(adsView(rows, req.user));
         }
     });
 }
 
 function showCreateAd(req, res) {
-    res.send(createAdView());
+    res.send(createAdView(req.user.id));
 }
 
 function createAd(req, res) {
-    const { title, description } = req.body;
-    const userId = req.user.id; // Assurez-vous que req.user.id est défini
+    const { title, description, userId } = req.body;
     const query = `INSERT INTO ads(title, description, userId) VALUES (?, ?, ?)`;
     db.run(query, [title, description, userId], function (err) {
         if (err) {
             console.error('Error creating ad: ', err.message);
             res.send('Error creating ad');
         } else {
-            res.send('Ad created successfully, pending approval');
+            res.send(`
+                <p>Ad created successfully, pending approval</p>
+                <p>You will be redirected to the ads page in 5 seconds...</p>
+                <script>
+                    setTimeout(function() {
+                        window.location.href = '/ads';
+                    }, 5000);
+                </script>
+            `);
         }
     });
 }
@@ -42,8 +54,16 @@ function approveAd(req, res) {
             console.error('Error approving ad: ', err.message);
             res.send('Error approving ad');
         } else {
-            res.redirect('/admin/pending-ads');
-        }
+        res.send(`
+            <p>Ad created successfully</p>
+            <p>You will be redirected to the ads page in 5 seconds...</p>
+            <script>
+                setTimeout(function() {
+                    window.location.href = '/admin';
+                }, 5000);
+            </script>
+        `);
+    }
     });
 }
 
@@ -55,7 +75,15 @@ function disapproveAd(req, res) {
             console.error('Error disapproving ad: ', err.message);
             res.send('Error disapproving ad');
         } else {
-            res.redirect('/admin/pending-ads');
+            res.send(`
+                <p>Ad deleted successfully</p>
+                <p>You will be redirected to the ads page in 5 seconds...</p>
+                <script>
+                    setTimeout(function() {
+                        window.location.href = '/admin';
+                    }, 5000);
+                </script>
+            `);
         }
     });
 }
