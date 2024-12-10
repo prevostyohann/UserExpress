@@ -1,0 +1,28 @@
+{
+  "name": "userexpress",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prevostyohann/UserExpress.git"
+  },
+  "author": "Yohann",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prevostyohann/UserExpress/issues"
+  },
+  "homepage": "https://github.com/prevostyohann/UserExpress#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7",
+    "sqlite3": "^5.1.7",
+    "userexpress": "file:"
+  }
+}
