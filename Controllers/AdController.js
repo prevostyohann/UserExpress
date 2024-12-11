@@ -112,7 +112,7 @@ function deleteAd(req, res) {
             } else {
                 res.send(`
                     <p>Ad not found or you do not have permission to delete it</p>
-                    <p>You will be redirected in 3 seconds...</p>
+                    <p>You will be redirected in 1 seconds...</p>
                     ${redirectScript(isAdmin ? '/admin' : '/ads/user', 1000)}
                 `);
             }

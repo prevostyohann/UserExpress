@@ -36,7 +36,7 @@ app.post('/admin/update', adminMiddleware, updateUser);
 app.get('/admin/delete/:id', adminMiddleware, deleteUser);
 app.get('/admin/pending-ads', adminMiddleware, showPendingAds);
 app.get('/admin/all-ads', adminMiddleware, showAllAds);
-app.post('/ads/delete/:id', adminMiddleware, deleteAd);
+app.post('/admin/all-ads/delete/:id', adminMiddleware, deleteAd);
 
 // Ad routes
 app.get('/ads', showAds);
@@ -45,4 +45,4 @@ app.post('/ads', createAd);
 app.post('/ads/approve/:id', approveAd);
 app.post('/ads/disapprove/:id', disapproveAd);
 app.get('/ads/user', showUserAds);
-app.post('/delete/:id', deleteAd);
+app.post('/ads/delete/:id', deleteAd);

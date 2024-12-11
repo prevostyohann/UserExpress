@@ -48,8 +48,8 @@ function traitLogin(req, res) {
         } else {
             res.send(`
                 <p>Nom d'utilisateur ou mot de passe incorrect</p>
-                <p>You will be redirected to the home page in 2 seconds...</p>
-                ${redirectScript('/', 2000)}
+                <p>You will be redirected to the login page in 2 seconds...</p>
+                ${redirectScript('/login', 2000)}
             `);
         }
     });
