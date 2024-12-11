@@ -9,6 +9,16 @@ const bcrypt = require('bcrypt');
 
 const User = require("../Models/User");
 
+function redirectScript(url, delay) {
+    return `
+        <script>
+            setTimeout(function() {
+                window.location.href = '${url}';
+            }, ${delay});
+        </script>
+    `;
+}
+
 function getUser(req, res) {
     const user = new User(1, 'toto');
     res.send(userView(user));
@@ -33,10 +43,14 @@ function traitLogin(req, res) {
         } else if (row && bcrypt.compareSync(password, row.password)) {
             console.log('connecté', username);
             // Stocker les informations de l'utilisateur dans un cookie
-            res.cookie('user', JSON.stringify({ id: row.id, username: row.username, rights: row.rights }), { httpOnly: true });
+            res.cookie('user', JSON.stringify({ id: row.id, username: row.username, isAdmin: row.isAdmin }), { httpOnly: true });
             res.redirect('/');
         } else {
-            res.send('mauvais mot de passe');
+            res.send(`
+                <p>Nom d'utilisateur ou mot de passe incorrect</p>
+                <p>You will be redirected to the home page in 2 seconds...</p>
+                ${redirectScript('/', 2000)}
+            `);
         }
     });
 }
@@ -52,15 +66,17 @@ function traitRegister(req, res) {
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const query = `INSERT INTO users(username, password) VALUES (?, ?)`;
-
+    const query = `INSERT INTO users(username, password, isAdmin) VALUES (?, ?, 0)`;
     db.run(query, [username, hashedPassword], function (err) {
         if (err) {
             console.error('echec enregistrement: ', err.message);
             res.send('ERROR');
         } else {
-            console.log('user success', username);
-            res.send('register succes');
+            res.send(`
+                <p>Register success</p>
+                <p>You will be redirected to the home page in 1 seconds...</p>
+                ${redirectScript('/', 1000)}
+            `);
         }
     });
 }
@@ -98,14 +114,18 @@ function showEditUser(req, res) {
 
 // Function to handle updating user rights
 function updateUser(req, res) {
-    const { id, username, rights } = req.body;
-    const query = `UPDATE users SET username = ?, rights = ? WHERE id = ?`;
-    db.run(query, [username, rights, id], function (err) {
+    const { id, username, isAdmin } = req.body;
+    const query = `UPDATE users SET username = ?, isAdmin = ? WHERE id = ?`;
+    db.run(query, [username, isAdmin, id], function (err) {
         if (err) {
             console.error('Error updating user: ', err.message);
             res.send('Error updating user');
         } else {
-            res.send('User updated successfully');
+            res.send(`
+                <p>Register success</p>
+                <p>You will be redirected to the admin page in 1 seconds...</p>
+                ${redirectScript('/admin', 1000)}
+            `);
         }
     });
 }
@@ -119,7 +139,11 @@ function deleteUser(req, res) {
             console.error('Error deleting user: ', err.message);
             res.send('Error deleting user');
         } else {
-            res.send('User deleted successfully');
+            res.send(`
+                <p>Register success</p>
+                <p>You will be redirected to the admin page in 1 seconds...</p>
+                ${redirectScript('/admin', 1000)}
+            `);
         }
     });
 }

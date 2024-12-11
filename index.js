@@ -1,6 +1,6 @@
 const express = require('express');
 const { getUser, showLogin, traitLogin, showRegister, traitRegister, showAdminPanel, showEditUser, updateUser, deleteUser, showHome } = require('./Controllers/UserController');
-const { showAds, showCreateAd, createAd, approveAd, deleteAd, showPendingAds, disapproveAd } = require('./Controllers/AdController');
+const { showAds, showCreateAd, createAd, approveAd, deleteAd, showPendingAds, disapproveAd, showUserAds, showAllAds } = require('./Controllers/AdController');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { authMiddleware, adminMiddleware } = require('./middlewares/authMiddleware');
@@ -34,7 +34,9 @@ app.get('/admin', adminMiddleware, showAdminPanel);
 app.get('/admin/edit/:id', adminMiddleware, showEditUser);
 app.post('/admin/update', adminMiddleware, updateUser);
 app.get('/admin/delete/:id', adminMiddleware, deleteUser);
-app.get('/admin/pending-ads', adminMiddleware, showPendingAds); // Route pour les annonces en attente
+app.get('/admin/pending-ads', adminMiddleware, showPendingAds);
+app.get('/admin/all-ads', adminMiddleware, showAllAds);
+app.post('/ads/delete/:id', adminMiddleware, deleteAd);
 
 // Ad routes
 app.get('/ads', showAds);
@@ -42,4 +44,5 @@ app.get('/ads/create', showCreateAd);
 app.post('/ads', createAd);
 app.post('/ads/approve/:id', approveAd);
 app.post('/ads/disapprove/:id', disapproveAd);
-app.get('/ads/delete/:id', deleteAd);
+app.get('/ads/user', showUserAds);
+app.post('/delete/:id', deleteAd);

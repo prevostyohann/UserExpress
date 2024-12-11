@@ -1,5 +1,8 @@
-module.exports = function (ads) {
+const navView = require('./navView');
+
+module.exports = function (ads, user) {
     return `
+    ${navView(user)}
         <h1>Pending Ads</h1>
         <ul>
             ${ads.map(ad => `
