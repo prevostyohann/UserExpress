@@ -39,7 +39,7 @@ function traitLogin(req, res) {
     db.get(query, [username], function (err, row) {
         if (err) {
             console.error('echec connexion : ', err.message);
-            res.send('mauvais mot de passe');
+            res.send('base de donnée inaccessible');
         } else if (row && bcrypt.compareSync(password, row.password)) {
             console.log('connecté', username);
             // Stocker les informations de l'utilisateur dans un cookie

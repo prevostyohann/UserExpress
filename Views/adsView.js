@@ -12,6 +12,7 @@ module.exports = function (ads, user) {
                     <h2>${ad.title}</h2>
                     <p>${ad.description}</p>
                     <p>Posted by: ${ad.username}</p>
+                    
                 </li>
             `).join('')}
         </ul>
