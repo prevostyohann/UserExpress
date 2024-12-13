@@ -9,6 +9,7 @@ module.exports = function (ads, user) {
                 <li>
                     <h2>${ad.title}</h2>
                     <p>${ad.description}</p>
+                    <p>Price : ${ad.price} $</p>
                     <p>Posted by User ID: ${ad.userId}</p>
                     <form action="/ads/approve/${ad.id}" method="POST" style="display:inline;">
                         <button type="submit">Approve</button>

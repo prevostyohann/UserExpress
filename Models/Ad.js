@@ -1,8 +1,9 @@
 class Ad {
-    constructor(id, title, description, userId, isApproved) {
+    constructor(id, title, description, price, userId, isApproved) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.price = price;
         this.userId = userId;
         this.isApproved = isApproved;
     }

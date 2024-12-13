@@ -18,8 +18,10 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             description TEXT NOT NULL,
+            price DECIMAL NOT NULL,
             userId INTEGER NOT NULL,
             isApproved INTEGER DEFAULT 0,
+            image TEXT,
             FOREIGN KEY(userId) REFERENCES users(id)
         )`, (err) => {
             if (err) {
@@ -36,6 +38,20 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
         )`, (err) => {
             if (err) {
                 console.error("Error creating favorites table: ", err.message);
+            }
+        });
+
+        db.run(`CREATE TABLE IF NOT EXISTS cart(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            userId INTEGER NOT NULL,
+            adId INTEGER NOT NULL,
+            quantity INTEGER DEFAULT 1,
+            UNIQUE(userId, adId),
+            FOREIGN KEY(userId) REFERENCES users(id),
+            FOREIGN KEY(adId) REFERENCES ads(id)
+        )`, (err) => {
+            if (err) {
+                console.error("Error creating cart table: ", err.message);
             }
         });
 

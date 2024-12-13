@@ -38,9 +38,9 @@ function showCreateAd(req, res) {
 }
 
 function createAd(req, res) {
-    const { title, description, userId } = req.body;
-    const query = `INSERT INTO ads(title, description, userId) VALUES (?, ?, ?)`;
-    db.run(query, [title, description, userId], function (err) {
+    const { title, description, price, userId } = req.body;
+    const query = `INSERT INTO ads(title, description, price, userId) VALUES (?, ?, ?, ?)`;
+    db.run(query, [title, description, price, userId], function (err) {
         if (err) {
             console.error('Error creating ad: ', err.message);
             res.send('Error creating ad');

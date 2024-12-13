@@ -1,6 +1,8 @@
 const express = require('express');
 const { getUser, showLogin, traitLogin, showRegister, traitRegister, showAdminPanel, showEditUser, updateUser, deleteUser, showHome } = require('./Controllers/UserController');
 const { showAds, showCreateAd, createAd, approveAd, deleteAd, showPendingAds, disapproveAd, showUserAds, showAllAds } = require('./Controllers/AdController');
+const { addFavorite, removeFavorite, showFavorites } = require('./Controllers/FavoritesController');
+const { addToCart, removeFromCart, showCart } = require('./Controllers/CartController');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { authMiddleware, adminMiddleware } = require('./middlewares/authMiddleware');
@@ -46,3 +48,13 @@ app.post('/ads/approve/:id', approveAd);
 app.post('/ads/disapprove/:id', disapproveAd);
 app.get('/ads/user', showUserAds);
 app.post('/ads/delete/:id', deleteAd);
+
+//Favorites routes
+app.post('/favorites/add/:adId', addFavorite);
+app.post('/favorites/remove/:adId', removeFavorite);
+app.get('/favorites', showFavorites);
+
+//Cart routes
+app.post('/cart/add/:adId', addToCart);
+app.post('/cart/remove/:adId', removeFromCart);
+app.get('/cart', showCart);

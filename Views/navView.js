@@ -6,6 +6,7 @@ module.exports = function (user) {
             ${user ? `
                 <button onclick="window.location.href='/ads'" aria-label="Ads">Ads</button>
                 ${user.isAdmin ? `<button onclick="window.location.href='/admin'" aria-label="Admin">Admin</button>` : ''}
+                 <button onclick="window.location.href='/cart'">My Cart</button>
                 <button onclick="window.location.href='/logout'" aria-label="Logout">Logout</button>
             ` : `
                 <button onclick="window.location.href='/login'" aria-label="Login">Login</button>
